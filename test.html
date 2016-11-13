@@ -1,0 +1,33 @@
+<html>
+<head>
+<script>
+function search()
+{
+	//Search Dental Polcies and retrieve the: PolicyId, ParticipantId and InsurancePlan
+	//SELECT pi.id, pi.participant_id, pi.insurance_plan FROM policy_info pi WHERE pi.insurance_product = 'Dental'
+	url = "https://v3v10.vitechinc.com/solr/policy_info/select?indent=on&wt=json" + "&q=insurance_product:Dental" + "&rows=100" + "&fl=id,participant_id,insurance_plan";
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url);
+	
+	xhr.onreadystatechange = function()
+	{
+		if(xhr.readyState == XMLHttpRequest.DONE)
+		{
+			searchSuccess(xhr.responseText);
+		}
+	}
+	xhr.send(null);
+}
+
+function searchSuccess(response)
+{
+	var json = JSON.parse(response);
+	alert(json.response.numFound); //Print record count.
+}
+</script>
+</head>
+<body>
+<input type="button" value="Search" onclick = "search()"/>
+</body>
+</html>
