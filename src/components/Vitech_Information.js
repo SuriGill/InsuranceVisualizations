@@ -11,7 +11,8 @@ class Vitech_Information extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      policyType: 'Accident'
+      policyType: 'Accident',
+      couponType: 'Coupon Code'
     }
   }
 
@@ -62,6 +63,12 @@ class Vitech_Information extends Component {
     })
     this.parsePolicyUrl(value)
   }
+  handleCouponChange = (event, index, value) => {
+    console.log("You chose: " + value)
+    this.setState({
+      couponType: value
+    })
+  }
 
   getValueType = () => {
     return this.state.policyType
@@ -73,6 +80,12 @@ class Vitech_Information extends Component {
           <DropDownMenu value={this.state.policyType} onChange={this.handlePolicyChange}>
             <MenuItem value={'Accident'} primaryText="Accident Policies" />
             <MenuItem value={'Dental'} primaryText="Dental Policies" />
+          </DropDownMenu>
+          <br/>
+          <DropDownMenu value={this.state.couponType} onChange={this.handleCouponChange}>
+            <MenuItem value={'FREESPOUSE'} primaryText='FREESPOUSE Coupon' />
+            <MenuItem value={'ACCOFF10'} primaryText="ACCOFF10 Coupon" />
+            <MenuItem value={'FINCON'} primaryText="FINCON Coupon" />
           </DropDownMenu>
         </div>
       );

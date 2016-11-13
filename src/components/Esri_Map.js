@@ -17,15 +17,20 @@ class Esri_Map extends Component {
     super(props);
     this.state = {
       map: null,
-      mapID: chance.hash({length: 15})
+      mapID: chance.hash({length: 15}),
+      mapID2: chance.hash({length: 15})
     }
   }
 
   componentDidMount = () => {
     let map = Leaflet.map(this.state.mapID).setView([45.526, -122.667], 15);
+    let map2 = Leaflet.map(this.state.mapID2).setView([45.526, -122.667], 15);
     EsriLeaflet.basemapLayer('DarkGray', {
       detectRetina: true
     }).addTo(map);
+    EsriLeaflet.basemapLayer('DarkGray', {
+      detectRetina: true
+    }).addTo(map2);
 
     var icons = {
       north: Leaflet.icon({
@@ -69,10 +74,55 @@ class Esri_Map extends Component {
       opacity: 0.85,
       fillOpacity: 0.5
     }
-  }).addTo(map);;
+  }).addTo(map);
+
+  let stops2 = EsriLeaflet.featureLayer({
+    url: 'http://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_ZIP_Codes_2015/FeatureServer/0',
+    pointToLayer: function (geojson, latlng) {
+      return Leaflet.circleMarker(latlng);
+    },
+    style:{
+      color: '#ffa500',
+      weight: 2,
+      opacity: 0.85,
+      fillOpacity: 0.5
+    }
+  }).addTo(map2);
+
+  let stops3 = EsriLeaflet.featureLayer({
+    url: '  https://demographics6.arcgis.com/arcgis/rest/services?redirect=https://demographics6.arcgis.com/arcgis/rest/services/USA_Demographics_and_Boundaries_2016/MapServer',
+    pointToLayer: function (geojson, latlng) {
+      return Leaflet.circleMarker(latlng);
+    },
+    style:{
+      color: '#333333',
+      weight: 2,
+      opacity: 0.85,
+      fillOpacity: 0.5
+    }
+  }).addTo(map);
+
+
+  let stops4 = EsriLeaflet.featureLayer({
+    url: 'https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Heritage_Trees_Portland/FeatureServer/0',
+    pointToLayer: function (geojson, latlng) {
+      return Leaflet.circleMarker(latlng);
+    },
+    style:{
+      color: '#551a8b',
+      weight: 2,
+      opacity: 0.85,
+      fillOpacity: 0.5
+    }
+  }).addTo(map2);
+  
+
+
+  // https://demographics6.arcgis.com/arcgis/rest/services?redirect=https://demographics6.arcgis.com/arcgis/rest/services/USA_Demographics_and_Boundaries_2016/MapServer
+
+  // http://demographics5.arcgis.com/arcgis/rest/services/USA_Traffic_Counts/MapServer/0
 
   }
-
   handleChange = (event) => {
 
   }
@@ -80,8 +130,10 @@ class Esri_Map extends Component {
   render() {
 
     return (
-    	<div id={this.state.mapID} style={{width:"1000px",height:"800px"}}> 
-        <div id='map'> </div>
+    	<div style={{width:"1000px",height:"1800px"}}> 
+        <div id={this.state.mapID} style={{width:"1000px",height:"800px"}}> </div>
+        <br />
+        <div id={this.state.mapID2} style={{width:"1000px",height:"800px"}}> </div>
       </div>
     );
   }
