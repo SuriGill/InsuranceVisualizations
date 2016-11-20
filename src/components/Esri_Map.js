@@ -18,19 +18,25 @@ class Esri_Map extends Component {
     this.state = {
       map: null,
       mapID: chance.hash({length: 15}),
-      mapID2: chance.hash({length: 15})
+      mapID2: chance.hash({length: 15}),
+      mapID3: chance.hash({length: 15}),
     }
   }
 
   componentDidMount = () => {
     let map = Leaflet.map(this.state.mapID).setView([45.526, -122.667], 15);
     let map2 = Leaflet.map(this.state.mapID2).setView([45.526, -122.667], 15);
+    let map3 = Leaflet.map(this.state.mapID3).setView([45.526, -122.667], 15);
     EsriLeaflet.basemapLayer('DarkGray', {
       detectRetina: true
     }).addTo(map);
     EsriLeaflet.basemapLayer('DarkGray', {
       detectRetina: true
     }).addTo(map2);
+    EsriLeaflet.basemapLayer('DarkGray', {
+      detectRetina: true
+    }).addTo(map3);
+
 
     var icons = {
       north: Leaflet.icon({
@@ -89,18 +95,31 @@ class Esri_Map extends Component {
     }
   }).addTo(map2);
 
+  let stops5 = EsriLeaflet.featureLayer({
+    url: 'http://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_ZIP_Codes_2015/FeatureServer/0',
+    pointToLayer: function (geojson, latlng) {
+      return Leaflet.circleMarker(latlng);
+    },
+    style:{
+      color: '#00CED1',
+      weight: 2,
+      opacity: 0.85,
+      fillOpacity: 0.5
+    }
+  }).addTo(map3);
+
   let stops3 = EsriLeaflet.featureLayer({
     url: '  https://demographics6.arcgis.com/arcgis/rest/services?redirect=https://demographics6.arcgis.com/arcgis/rest/services/USA_Demographics_and_Boundaries_2016/MapServer',
     pointToLayer: function (geojson, latlng) {
       return Leaflet.circleMarker(latlng);
     },
     style:{
-      color: '#333333',
+      color: '#FF69B4',
       weight: 2,
       opacity: 0.85,
       fillOpacity: 0.5
     }
-  }).addTo(map);
+  }).addTo(map2);
 
 
   let stops4 = EsriLeaflet.featureLayer({
@@ -130,10 +149,12 @@ class Esri_Map extends Component {
   render() {
 
     return (
-    	<div style={{width:"1000px",height:"1800px"}}> 
+    	<div style={{width:"1000px",height:"2500px"}}> 
         <div id={this.state.mapID} style={{width:"1000px",height:"800px"}}> </div>
         <br />
         <div id={this.state.mapID2} style={{width:"1000px",height:"800px"}}> </div>
+        <br />
+        <div id={this.state.mapID3} style={{width:"1000px",height:"800px"}}> </div>
       </div>
     );
   }
